@@ -8,40 +8,45 @@ import { handleCaptureDisplay } from "./tools/capture-display.js";
 import { handleCaptureWindow } from "./tools/capture-window.js";
 import { handleListDisplays } from "./tools/list-displays.js";
 
-const server = new McpServer({
-  name: "mcp-screen",
-  version: "1.0.0",
-});
+export function createServer(): McpServer {
+  const server = new McpServer({
+    name: "mcp-screen",
+    version: "1.0.0",
+  });
 
-server.tool(
-  "capture_screen",
-  "Capture a screenshot of all displays. Returns a full-resolution PNG image.",
-  {},
-  async () => handleCaptureScreen()
-);
+  server.tool(
+    "capture_screen",
+    "Capture a screenshot of all displays. Returns a full-resolution PNG image.",
+    {},
+    async () => handleCaptureScreen()
+  );
 
-server.tool(
-  "capture_display",
-  "Capture a screenshot of a specific display by index. Use list_displays first to see available displays.",
-  { display_index: z.number().int().min(1).describe("Display index (1-based). Use list_displays to find available indices.") },
-  async ({ display_index }) => handleCaptureDisplay(display_index)
-);
+  server.tool(
+    "capture_display",
+    "Capture a screenshot of a specific display by index. Use list_displays first to see available displays.",
+    { display_index: z.number().int().min(1).describe("Display index (1-based). Use list_displays to find available indices.") },
+    async ({ display_index }) => handleCaptureDisplay(display_index)
+  );
 
-server.tool(
-  "capture_window",
-  "Capture a screenshot of the frontmost window only.",
-  {},
-  async () => handleCaptureWindow()
-);
+  server.tool(
+    "capture_window",
+    "Capture a screenshot of the frontmost window only.",
+    {},
+    async () => handleCaptureWindow()
+  );
 
-server.tool(
-  "list_displays",
-  "List all available displays with their names and resolutions.",
-  {},
-  async () => handleListDisplays()
-);
+  server.tool(
+    "list_displays",
+    "List all available displays with their names and resolutions.",
+    {},
+    async () => handleListDisplays()
+  );
+
+  return server;
+}
 
 async function main() {
+  const server = createServer();
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }
