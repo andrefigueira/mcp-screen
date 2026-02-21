@@ -52,7 +52,7 @@ Your terminal needs **Screen Recording** permission:
 
 ## Author
 
-[@voidmode_](https://x.com/voidmode_)
+[@voidmode](https://x.com/voidmode)
 
 ## License
 
